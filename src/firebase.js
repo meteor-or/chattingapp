@@ -1,14 +1,8 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import "firebase/auth";
-import "firebase/database";
-import "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/database";
+import "firebase/compat/storage";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyCsdifbnp_rXt9tLzsnr9XF4QKGQLFzH30",
   authDomain: "chattingapp-7a4b8.firebaseapp.com",
@@ -17,7 +11,11 @@ const firebaseConfig = {
   messagingSenderId: "48843628539",
   appId: "1:48843628539:web:c10f8fa5b61a6ef07ef55e",
   measurementId: "G-RJ78CJ1F5L",
+  databaseURL:
+    "https://chattingapp-7a4b8-default-rtdb.asia-southeast1.firebasedatabase.app",
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
+
+export default firebase;

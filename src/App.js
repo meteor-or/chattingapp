@@ -9,7 +9,6 @@ import RegisterPage from "./components/RegisterPage/RegisterPage";
 function App() {
   return (
     <Router>
-      <ChatPage />
       <Routes>
         <Route path="/" exact={true} element={<ChatPage />} />
         <Route path="/login" element={<LoginPage />} />
