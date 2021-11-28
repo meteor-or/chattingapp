@@ -58,12 +58,9 @@ function RegisterPage() {
   */
   return (
     <div className="auth-wrapper">
-      <div style={{ textAlign: "center" }}>
-        <h3>Register</h3>
-      </div>
-
       {/* 회원 가입 폼 */}
       <form onSubmit={handleSubmit(onSubmit)}>
+        <h2>이메일로 회원가입</h2>
         {/* 이메일 */}
         <label>이메일</label>
         <input

@@ -138,7 +138,10 @@ button {
   display: inline;
   content: "⚠ ";
 }
-
+.auth-wrapper h2 {
+  font-weight: var(--font-black);
+  margin-bottom: var(--mb-1-5);
+}
 .auth-wrapper input {
   display: block;
   box-sizing: border-box;
@@ -156,7 +159,6 @@ button {
   display: block;
   margin-bottom: var(--mb-0-5);
   color: var(--title-color);
-  font-weight: bold;
 }
 
 .auth-wrapper button[type="submit"],
