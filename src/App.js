@@ -7,9 +7,10 @@ import LoginPage from "./components/LoginPage/LoginPage";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 
 import firebase from "./firebase";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "./redux/actions/user_action";
+import { setUser, clearUser } from "./redux/actions/user_action";
 
 function App(props) {
   let navigate = useNavigate();
@@ -17,7 +18,9 @@ function App(props) {
   const isLoading = useSelector((state) => state.user.isLoading);
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
+    const auth = getAuth();
+
+    onAuthStateChanged(auth, (user) => {
       console.log("user", user);
       //로그인이 된 상태
       if (user) {
@@ -25,6 +28,7 @@ function App(props) {
         dispatch(setUser(user));
       } else {
         navigate("/login");
+        dispatch(clearUser(user));
       }
     });
   }, []);

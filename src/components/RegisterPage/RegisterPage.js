@@ -1,8 +1,13 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import firebase from "../../firebase";
 import md5 from "md5";
+import { getDatabase, ref, set } from "firebase/database";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 
 function RegisterPage() {
   const {
@@ -13,15 +18,22 @@ function RegisterPage() {
   } = useForm();
   const [errorFromSubmit, setErrorFromSubmit] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const password = useRef();
+  password.current = watch("password");
+
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      let createdUser = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(data.email, data.password);
-      console.log("createdUser", createdUser);
 
-      await createdUser.user.updateProfile({
+      const auth = getAuth();
+      let createdUser = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+
+      await updateProfile(auth.currentUser, {
         displayName: data.name,
         photoURL: `http:gravatar.com/avatar/${md5(
           createdUser.user.email
@@ -29,7 +41,8 @@ function RegisterPage() {
       });
 
       //Firebase 데이터베이스에 저장해주기
-      await firebase.database().ref("users").child(createdUser.user.uid).set({
+
+      set(ref(getDatabase(), `users/${createdUser.user.uid}`), {
         name: createdUser.user.displayName,
         image: createdUser.user.photoURL,
       });
@@ -44,8 +57,6 @@ function RegisterPage() {
     }
   };
 
-  const password = useRef();
-  password.current = watch("password");
   /* useRef로 비밀번호 기억해두기!
     Js에서는 querySelector로 Dom을 선택하지만 리액트에서는 ref로 선택한다
     1. 클래스 컴포넌트 -> React.CreatRef
