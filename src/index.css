@@ -1,5 +1,4 @@
 /*=============== GOOGLE FONTS ===============*/
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;900&display=swap");
 
 /*=============== VARIABLES CSS ===============*/
 :root {
@@ -12,11 +11,12 @@
   --blue-light: #c9e2ff;
   --blue-medium: #4593fc;
   --blue-default: #1b64da;
+  --purple-default: #7a84eb;
+  --purple-dark: #636ee6;
   --red: #d22030;
   --white: #fff;
 
   /*========== Font and typography ==========*/
-  --body-font: "Poppins", sans-serif;
   --biggest-font-size: 2rem;
   --h1-font-size: 1.5rem;
   --h2-font-size: 1.25rem;
@@ -222,4 +222,17 @@ input[type="submit"] {
   text-transform: uppercase;
   padding: 10px 20px;
   border-radius: 4px;
+}
+
+.message_form_btn {
+  background: var(--purple-default);
+  color: var(--white);
+  text-transform: uppercase;
+  border: none;
+  margin-top: 40px;
+  padding: 20px;
+  font-weight: 100;
+}
+.message_form_btn:hover {
+  background-color: var(--purple-dark);
 }
