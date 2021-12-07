@@ -9,10 +9,16 @@ import {
   Accordion,
 } from "react-bootstrap";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaLock } from "react-icons/fa";
+import { FaLock, FaLockOpen } from "react-icons/fa";
 import { MdFavorite } from "react-icons/md";
+import { useSelector } from "react-redux";
 
-function MassageHeader() {
+function MassageHeader({ handleSearchChange }) {
+  const chatRoom = useSelector((state) => state.chatRoom.currentChatRoom);
+  const isPrivateChatRoom = useSelector(
+    (state) => state.chatRoom.isPrivateChatRoom
+  );
+
   return (
     <header
       style={{
@@ -28,7 +34,12 @@ function MassageHeader() {
         <Row>
           <Col>
             <h2>
-              <FaLock /> ChatRoomName <MdFavorite />
+              {isPrivateChatRoom ? (
+                <FaLock style={{ marginBottom: "10px" }} />
+              ) : (
+                <FaLockOpen style={{ marginBottom: "10px" }} />
+              )}
+              {chatRoom && chatRoom.name} <MdFavorite />
             </h2>
           </Col>
           <Col>
@@ -39,6 +50,7 @@ function MassageHeader() {
               </InputGroup.Text>
 
               <FormControl
+                onChange={handleSearchChange}
                 placeholder="메세지 검색하기"
                 aria-label="Search"
                 aria-describedby="basic-addon1"

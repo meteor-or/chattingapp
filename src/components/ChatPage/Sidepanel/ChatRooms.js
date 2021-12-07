@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { FaRegSmileWink } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Badge } from "react-bootstrap";
 import firebase from "../../../firebase";
 import {
   getDatabase,
@@ -13,7 +12,10 @@ import {
   update,
   off,
 } from "firebase/database";
-import { setCurrentChatRoom } from "../../../redux/actions/chatRoom_action";
+import {
+  setCurrentChatRoom,
+  setPrivateChatRoom,
+} from "../../../redux/actions/chatRoom_action";
 
 import { connect } from "react-redux";
 
@@ -99,6 +101,7 @@ export class ChatRooms extends Component {
 
   changeChatRoom = (room) => {
     this.props.dispatch(setCurrentChatRoom(room));
+    this.props.dispatch(setPrivateChatRoom(false));
     this.setState({ activeChatRoomId: room.id });
   };
 
@@ -114,6 +117,9 @@ export class ChatRooms extends Component {
         onClick={() => this.changeChatRoom(room)}
       >
         #{room.name}
+        <Badge style={{ float: "right", marginTop: "4px" }} bg="danger">
+          1
+        </Badge>
       </li>
     ));
 
@@ -129,8 +135,7 @@ export class ChatRooms extends Component {
             justifyContent: "space-between",
           }}
         >
-          <FaRegSmileWink style={{ marginRight: 3 }} />
-          CHAT ROOMS (1)
+          CHAT ROOMS ({this.state.chatRooms.length})
           <button style={{ backgroundColor: "transparent" }}>
             <FaPlus
               onClick={this.handleShow}

@@ -17,6 +17,9 @@ export class Mainpanel extends Component {
     messages: [],
     messagesRef: ref(getDatabase(), "messages"),
     messagesLoading: true,
+    searchTerm: "",
+    searchResults: [],
+    searchLoading: false,
   };
 
   componentDidMount() {
@@ -26,16 +29,43 @@ export class Mainpanel extends Component {
       this.addMessagesListeners(chatRoom.id);
     }
   }
+
+  handleSearchMessages = () => {
+    const chatRoomMessages = [...this.state.messages];
+    const regex = new RegExp(this.state.searchTerm, "gi");
+    const searchResults = chatRoomMessages.reduce((acc, message) => {
+      if (
+        (message.content && message.content.match(regex)) ||
+        message.user.name.match(regex)
+      ) {
+        acc.push(message);
+      }
+      return acc;
+    }, []);
+    this.setState({ searchResults });
+  };
+
+  handleSearchChange = (event) => {
+    this.setState(
+      {
+        searchTerm: event.target.value,
+        searchLoading: true,
+      },
+      () => this.handleSearchMessages()
+    );
+  };
+
   addMessagesListeners = (chatRoomId) => {
     let messagesArray = [];
     let { messagesRef } = this.state;
 
-    this.state.messagesRef
-      .child(chatRoomId)
-      .on("child_added", (DataSnapshot) => {
-        messagesArray.push(DataSnapshot.val());
-        this.setState({ messages: messagesArray, messagesLoading: false });
+    onChildAdded(child(messagesRef, chatRoomId), (DataSnapshot) => {
+      messagesArray.push(DataSnapshot.val());
+      this.setState({
+        messages: messagesArray,
+        messagesLoading: false,
       });
+    });
   };
 
   renderMessages = (messages) =>
@@ -43,17 +73,19 @@ export class Mainpanel extends Component {
     //컴포넌트 하나를 더 추가함 message
     messages.map((message) => (
       <Message
-        key={messages.timestamp}
-        messages={message}
+        key={message.timestamp}
+        message={message}
         user={this.props.user}
       />
     ));
 
   render() {
-    const { messages } = this.state;
+    const { messages, searchTerm, searchResults } = this.state;
+
+    console.log("searchTerm", searchTerm);
     return (
       <div style={{ padding: "2rem 2rem 0 2rem" }}>
-        <MessageHeader />
+        <MessageHeader handleSearchChange={this.handleSearchChange} />
         <div
           style={{
             width: "100%",
@@ -65,7 +97,9 @@ export class Mainpanel extends Component {
             overflow: "auto",
           }}
         >
-          {this.renderMessages(messages)}
+          {searchTerm
+            ? this.renderMessages(searchResults)
+            : this.renderMessages(messages)}
         </div>
         <MesseageForm />
       </div>
@@ -75,7 +109,7 @@ export class Mainpanel extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.currntUser,
+    user: state.user.currentUser,
     chatRoom: state.chatRoom.currentChatRoom,
   };
 };
