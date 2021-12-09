@@ -55,7 +55,7 @@ function LoginPage() {
           <p>비밀번호가이 너무 짧아요😥 10자 이상으로 적어주세요!</p>
         )}
         {/* 비밀번호 재확인 */}
-        <input type="submit" value="가입하기" disabled={loading} />
+        <input type="submit" value="로그인하기" disabled={loading} />
         <Link style={{ color: "gray", textDecoration: "none" }} to="/register">
           아이디가 없으신가요?
         </Link>
