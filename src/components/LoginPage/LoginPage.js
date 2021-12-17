@@ -52,7 +52,7 @@ function LoginPage() {
           <p>비밀번호가 비었어요!</p>
         )}
         {errors.password && errors.password.type === "minLength" && (
-          <p>비밀번호가이 너무 짧아요😥 10자 이상으로 적어주세요!</p>
+          <p>비밀번호가 너무 짧아요😥 10자 이상으로 적어주세요!</p>
         )}
         {/* 비밀번호 재확인 */}
         <input type="submit" value="로그인하기" disabled={loading} />
